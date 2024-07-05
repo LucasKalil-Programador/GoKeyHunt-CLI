@@ -30,4 +30,4 @@ btcgo
 btcgo.exe
 
 # Ignore files code
-
+output.txt
