@@ -18,4 +18,4 @@ build: pull clean
 
 # Comando para rodar o binário
 run: build
-	./$(BINARY_NAME)
+	./$(BINARY_NAME) $(PARAMS)
