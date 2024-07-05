@@ -10,11 +10,7 @@ import (
 )
 
 func LoadData() (*domain.Ranges, *domain.Wallets) {
-	exePath, err := os.Executable()
-	if err != nil {
-		log.Fatalf("Erro ao obter o caminho do executável: %v\n", err)
-	}
-	rootDir := filepath.Dir(exePath)
+	rootDir := GetRootDir()
 
 	ranges, err := LoadRanges(filepath.Join(rootDir, "data", "ranges.json"))
 	if err != nil {

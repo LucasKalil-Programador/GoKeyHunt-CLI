@@ -52,7 +52,6 @@ func CreatePublicHash160(privKeyInt *big.Int) []byte {
 	pubKeyHash := hash160(compressedPubKey)
 
 	return pubKeyHash
-
 }
 
 // hash160 computes the RIPEMD160(SHA256(b)) hash.

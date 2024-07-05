@@ -13,12 +13,7 @@ func Worker(wallets *domain.Wallets, privKeyChan <-chan *big.Int, resultChan cha
 	for privKeyInt := range privKeyChan {
 		address := utils.CreatePublicHash160(privKeyInt)
 		if utils.Contains(wallets.Addresses, address) {
-			select {
-			case resultChan <- privKeyInt:
-				return
-			default:
-				return
-			}
+			resultChan <- privKeyInt
 		}
 	}
 }

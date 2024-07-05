@@ -1,5 +1,6 @@
 {
     "ranges": [
+        { "min": "0x0", "max": "0xffffffffffffffffffffffffffffffffffffffff", "status": 0 },
         { "min": "0x1", "max": "0x1", "status": 1 },
         { "min": "0x2", "max": "0x3", "status": 1 },
         { "min": "0x4", "max": "0x7", "status": 1 },

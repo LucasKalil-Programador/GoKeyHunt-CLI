@@ -15,6 +15,7 @@ type Wallets struct {
 }
 
 type Parameters struct {
-	WorkerCount  int
-	TargetWallet int
+	WorkerCount    int
+	TargetWallet   int
+	UpdateInterval int
 }
