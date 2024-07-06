@@ -18,4 +18,6 @@ type Parameters struct {
 	WorkerCount    int
 	TargetWallet   int
 	UpdateInterval int
+	BatchSize      int64
+	Rng            bool
 }

@@ -2,26 +2,40 @@ package core
 
 import (
 	"btcgo/internal/domain"
+	"btcgo/internal/utils"
 	"math/big"
 	"time"
 )
 
-func Scheduler(ranges *domain.Ranges, params domain.Parameters, inputChannel chan<- *big.Int) {
+func Scheduler(start, end *big.Int, params domain.Parameters, inputChannel chan<- *big.Int) {
 	defer close(inputChannel)
-	privKeyMin := new(big.Int)
-	privKeyMin.SetString(ranges.Ranges[params.TargetWallet].Min[2:], 16)
-	privKeyMax := new(big.Int)
-	privKeyMax.SetString(ranges.Ranges[params.TargetWallet].Max[2:], 16)
 
-	privKey := new(big.Int).Set(privKeyMin)
-	increment := big.NewInt(1)
+	privKey, increment := new(big.Int).Set(start), big.NewInt(1)
+	counter := params.BatchSize
+
+	end = GetEndValue(start, end, params)
 
 	ticker := time.NewTicker(time.Duration(params.UpdateInterval) * time.Second)
-	go updater(privKeyMin, privKeyMax, privKey, ticker)
+	go updater(start, end, privKey, ticker)
 	defer ticker.Stop()
 
-	for privKey.Cmp(privKeyMax) <= 0 {
+	for privKey.Cmp(end) <= 0 {
 		inputChannel <- new(big.Int).Set(privKey)
 		privKey.Add(privKey, increment)
+
+		if counter != -1 {
+			if counter <= 0 {
+				break
+			} else {
+				counter--
+			}
+		}
 	}
+}
+
+func GetEndValue(start, end *big.Int, params domain.Parameters) *big.Int {
+	if params.BatchSize != -1 {
+		end = utils.MinBigInt(new(big.Int).Add(start, big.NewInt(params.BatchSize)), end)
+	}
+	return end
 }

@@ -7,7 +7,7 @@ import (
 	"math/big"
 )
 
-func ProcessReceivedResults(outputChannel <-chan *big.Int, wallets *domain.Wallets) {
+func OutputHandler(outputChannel <-chan *big.Int, wallets *domain.Wallets) {
 	for result := range outputChannel {
 		address := utils.CreatePublicHash160(result)
 		walletIndex := utils.Find(wallets.Addresses, address) + 1
