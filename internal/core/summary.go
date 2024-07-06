@@ -2,6 +2,7 @@ package core
 
 import (
 	"btcgo/internal/domain"
+	"btcgo/internal/utils"
 	"fmt"
 	"math/big"
 
@@ -9,6 +10,7 @@ import (
 )
 
 func PrintSummary(start, end, rng *big.Int, params domain.Parameters, batchCounter int) {
+	batchSize := utils.MinBigInt(new(big.Int).Sub(GetEndValue(rng, end, params), start), big.NewInt(params.BatchSize))
 
 	fmt.Printf("\n\n---------------- Summary ----------------\n")
 	fmt.Printf("- Target wallet: %d\n", params.TargetWallet)
@@ -17,7 +19,7 @@ func PrintSummary(start, end, rng *big.Int, params domain.Parameters, batchCount
 	fmt.Printf("-   To: %s\n", humanize.BigComma(new(big.Int).Set(end)))
 	fmt.Printf("-\n")
 	fmt.Printf("- Workers count: %s\n", humanize.Comma(int64(params.WorkerCount)))
-	fmt.Printf("- Batch size: %v\n", humanize.BigComma(new(big.Int).Sub(GetEndValue(rng, end, params), start)))
+	fmt.Printf("- Batch size: %v\n", humanize.BigComma(batchSize))
 	fmt.Printf("- Use RNG start: %v\n", params.Rng)
 	fmt.Printf("- Interval between updates: %s\n", humanize.Comma(int64(params.UpdateInterval)))
 	fmt.Printf("-\n")
