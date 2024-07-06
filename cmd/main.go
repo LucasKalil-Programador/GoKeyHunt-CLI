@@ -24,12 +24,13 @@ func run(params domain.Parameters, ranges *domain.Ranges, wallets *domain.Wallet
 
 	start, _ := new(big.Int).SetString(ranges.Ranges[params.TargetWallet].Min[2:], 16)
 	end, _ := new(big.Int).SetString(ranges.Ranges[params.TargetWallet].Max[2:], 16)
+	startCpy := new(big.Int).Set(start)
 
 	if params.Rng {
 		start, _ = utils.GenerateRandomNumber(start, end)
 	}
 
-	core.PrintSummary(new(big.Int).Set(start), new(big.Int).Set(end), new(big.Int).Set(start), params, batchCounter)
+	core.PrintSummary(startCpy, new(big.Int).Set(end), new(big.Int).Set(start), params, batchCounter)
 
 	wg.Add(1)
 	go core.WorkersStartUp(params, wallets, inputChannel, outputChannel, &wg)
