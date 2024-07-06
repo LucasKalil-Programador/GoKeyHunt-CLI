@@ -4,6 +4,7 @@ import (
 	"btcgo/internal/core"
 	"btcgo/internal/domain"
 	"btcgo/internal/utils"
+	"log"
 	"math/big"
 	"sync"
 )
@@ -19,25 +20,38 @@ func main() {
 
 func run(params domain.Parameters, ranges *domain.Ranges, wallets *domain.Wallets, batchCounter int) {
 	inputChannel := make(chan *big.Int, params.WorkerCount*2)
-	outputChannel := make(chan *big.Int, 128)
-	var wg sync.WaitGroup
+	outputChannel := make(chan *big.Int, params.WorkerCount)
+	var workerGroup, outputGroup sync.WaitGroup
 
-	start, _ := new(big.Int).SetString(ranges.Ranges[params.TargetWallet].Min[2:], 16)
-	end, _ := new(big.Int).SetString(ranges.Ranges[params.TargetWallet].Max[2:], 16)
-	startCpy := new(big.Int).Set(start)
+	start, end := getStartAndEnd(ranges, params)
+	startClone := utils.Clone(start)
 
 	if params.Rng {
 		start, _ = utils.GenerateRandomNumber(start, end)
 	}
 
-	core.PrintSummary(startCpy, new(big.Int).Set(end), new(big.Int).Set(start), params, batchCounter)
+	core.PrintSummary(startClone, utils.Clone(end), utils.Clone(start), params, batchCounter)
 
-	wg.Add(1)
-	go core.WorkersStartUp(params, wallets, inputChannel, outputChannel, &wg)
-	go core.Scheduler(start, end, params, inputChannel)
-	go core.OutputHandler(outputChannel, wallets)
-	wg.Wait()
+	workerGroup.Add(1)
+	outputGroup.Add(1)
+	go core.WorkersStartUp(params, wallets, inputChannel, outputChannel, &workerGroup)
+	go core.OutputHandler(outputChannel, wallets, &outputGroup)
+	core.Scheduler(start, end, params, inputChannel)
 
+	close(inputChannel)
+	workerGroup.Wait()
 	close(outputChannel)
-	core.OutputHandler(outputChannel, wallets)
+	outputGroup.Wait()
+}
+
+func getStartAndEnd(ranges *domain.Ranges, params domain.Parameters) (*big.Int, *big.Int) {
+	start, ok := new(big.Int).SetString(ranges.Ranges[params.TargetWallet].Min[2:], 16)
+	if !ok {
+		log.Fatal("Erro ao converter o valor de início")
+	}
+	end, ok := new(big.Int).SetString(ranges.Ranges[params.TargetWallet].Max[2:], 16)
+	if !ok {
+		log.Fatal("Erro ao converter o valor de fim")
+	}
+	return start, end
 }

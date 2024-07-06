@@ -42,7 +42,7 @@ func getETAStr(totalV *big.Float, currentV *big.Float, keysPerSecF *big.Float) s
 	etaSeconds, _ := new(big.Float).Quo(remainF, keysPerSecF).Int64()
 	etaDuration := time.Duration(etaSeconds) * time.Second
 	var etaStr string
-	if etaSeconds < 31536000 {
+	if etaSeconds < 315360000 {
 		currentTime := time.Now()
 		etaTime := currentTime.Add(etaDuration)
 		etaStr = humanize.Time(etaTime)

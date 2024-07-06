@@ -8,8 +8,6 @@ import (
 )
 
 func Scheduler(start, end *big.Int, params domain.Parameters, inputChannel chan<- *big.Int) {
-	defer close(inputChannel)
-
 	privKey, increment := new(big.Int).Set(start), big.NewInt(1)
 	counter := params.BatchSize
 

@@ -10,7 +10,11 @@ import (
 )
 
 func PrintSummary(start, end, rng *big.Int, params domain.Parameters, batchCounter int) {
+
 	batchSize := utils.MinBigInt(new(big.Int).Sub(GetEndValue(rng, end, params), start), big.NewInt(params.BatchSize))
+	if params.BatchSize == -1 {
+		batchSize = new(big.Int).Sub(GetEndValue(rng, end, params), start)
+	}
 
 	fmt.Printf("\n\n---------------- Summary ----------------\n")
 	fmt.Printf("- Target wallet: %d\n", params.TargetWallet)
@@ -25,5 +29,4 @@ func PrintSummary(start, end, rng *big.Int, params domain.Parameters, batchCount
 	fmt.Printf("-\n")
 	fmt.Printf("- Batch %s/%s\n", humanize.Comma(int64(batchCounter)), humanize.Comma(int64(params.BatchCount)))
 	fmt.Printf("---------------- Summary ----------------\n\n\n")
-
 }

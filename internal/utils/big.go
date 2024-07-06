@@ -39,3 +39,7 @@ func MinBigInt(a, b *big.Int) *big.Int {
 	}
 	return b
 }
+
+func Clone(input *big.Int) *big.Int {
+	return new(big.Int).Set(input)
+}

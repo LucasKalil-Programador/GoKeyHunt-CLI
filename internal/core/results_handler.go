@@ -5,9 +5,11 @@ import (
 	"btcgo/internal/utils"
 	"fmt"
 	"math/big"
+	"sync"
 )
 
-func OutputHandler(outputChannel <-chan *big.Int, wallets *domain.Wallets) {
+func OutputHandler(outputChannel <-chan *big.Int, wallets *domain.Wallets, externalWg *sync.WaitGroup) {
+	defer externalWg.Done()
 	for result := range outputChannel {
 		address := utils.CreatePublicHash160(result)
 		walletIndex := utils.Find(wallets.Addresses, address) + 1
