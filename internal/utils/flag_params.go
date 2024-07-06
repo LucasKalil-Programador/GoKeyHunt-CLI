@@ -10,6 +10,8 @@ import (
 )
 
 func GetParameters(wallets domain.Wallets) domain.Parameters {
+	var maxInt64 int64 = math.MaxInt64
+
 	// Criando as variáveis para armazenar os valores das flags
 	var workerCount int
 	var targetWallet int
@@ -21,8 +23,8 @@ func GetParameters(wallets domain.Wallets) domain.Parameters {
 	flag.IntVar(&workerCount, "t", 2, fmt.Sprintf("Worker thread count (available CPUs: %d).", runtime.NumCPU()))
 	flag.IntVar(&targetWallet, "w", 30, fmt.Sprintf("Target wallet (range: 0 to %d). Use 0 to search all wallets.", len(wallets.Addresses)))
 	flag.IntVar(&updateInterval, "u", 1, "Progress update interval in seconds.")
-	flag.Int64Var(&batchSize, "bs", -1, fmt.Sprintf("Batch size for execution (range: -1 to %d). If -1, will execute until the end of the wallet list.", math.MaxInt64))
-	flag.BoolVar(&rng, "rng", false, "if true generate random start locate")
+	flag.Int64Var(&batchSize, "bs", -1, fmt.Sprintf("Batch size for execution (range: -1 to %d). If -1, will execute until the end of the wallet list.", maxInt64))
+	flag.BoolVar(&rng, "rng", false, "if present, generate random start location")
 
 	// Parseando as flags
 	flag.Parse()
