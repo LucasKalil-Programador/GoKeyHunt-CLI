@@ -8,15 +8,7 @@ import (
 	"github.com/dustin/go-humanize"
 )
 
-func updater(minInt, maxInt, currentInt *big.Int, ticker *time.Ticker) {
-	startTime := time.Now()
-	time.Sleep(250 * time.Millisecond)
-	for range ticker.C {
-		printProgressString(minInt, maxInt, currentInt, startTime)
-	}
-}
-
-func printProgressString(minInt, maxInt, currentInt *big.Int, startTime time.Time) {
+func PrintProgressString(minInt, maxInt, currentInt *big.Int, startTime time.Time) {
 	min, max, current := convertToBigFloat(minInt, maxInt, currentInt)
 	currentF := new(big.Float).Sub(current, min)
 	totalF := new(big.Float).Sub(max, min)

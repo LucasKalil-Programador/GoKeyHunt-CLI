@@ -15,10 +15,13 @@ type Wallets struct {
 }
 
 type Parameters struct {
-	WorkerCount    int
-	TargetWallet   int
-	UpdateInterval int
-	BatchCount     int
-	BatchSize      int64
-	Rng            bool
+	WorkerCount     int   // 4 bytes
+	TargetWallet    int   // 4 bytes
+	UpdateInterval  int   // 4 bytes
+	BatchCount      int   // 4 bytes
+	BatchSize       int64 // 8 bytes
+	Rng             bool  // 1 byte
+	VerboseSummary  bool  // 1 byte
+	VerboseProgress bool  // 1 byte
+	VerboseKeyFind  bool  // 1 byte + 4 padding
 }

@@ -12,12 +12,20 @@ func Scheduler(start, end *big.Int, params domain.Parameters, inputChannel chan<
 	end = GetEndValue(start, end, params)
 
 	ticker := time.NewTicker(time.Duration(params.UpdateInterval) * time.Second)
-	go updater(start, end, privKey, ticker)
-	defer ticker.Stop()
+	startTime := time.Now()
+	if params.VerboseProgress {
+		defer ticker.Stop()
+	} else {
+		ticker.Stop()
+	}
 
 	for privKey.Cmp(end) <= 0 {
-		inputChannel <- new(big.Int).Set(privKey)
-		privKey.Add(privKey, increment)
+		select {
+		case inputChannel <- utils.Clone(privKey):
+			privKey.Add(privKey, increment)
+		case <-ticker.C:
+			PrintProgressString(start, end, privKey, startTime)
+		}
 	}
 }
 

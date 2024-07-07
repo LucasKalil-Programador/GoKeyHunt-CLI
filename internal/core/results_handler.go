@@ -8,7 +8,7 @@ import (
 	"sync"
 )
 
-func OutputHandler(outputChannel <-chan *big.Int, wallets *domain.Wallets, externalWg *sync.WaitGroup) {
+func OutputHandler(outputChannel <-chan *big.Int, wallets *domain.Wallets, params domain.Parameters, externalWg *sync.WaitGroup) {
 	defer externalWg.Done()
 	for result := range outputChannel {
 		address := utils.CreatePublicHash160(result)
@@ -17,6 +17,8 @@ func OutputHandler(outputChannel <-chan *big.Int, wallets *domain.Wallets, exter
 
 		message := fmt.Sprintf("Wallet: %3d, Key: %064x, WIF %s\n", walletIndex, result, wif)
 		utils.WriteInOutput(message)
-		fmt.Printf("\r%s", message)
+		if params.VerboseKeyFind {
+			fmt.Printf("\r%s", message)
+		}
 	}
 }

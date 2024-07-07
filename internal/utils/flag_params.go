@@ -19,6 +19,9 @@ func GetParameters(wallets domain.Wallets) domain.Parameters {
 	var batchSize int64
 	var batchCount int
 	var rng bool
+	var verboseSummary bool
+	var verboseProgress bool
+	var verboseKeyFind bool
 
 	// Definindo as flags
 	flag.IntVar(&workerCount, "t", 2, fmt.Sprintf("Worker thread count (available CPUs: %d).", runtime.NumCPU()))
@@ -27,6 +30,9 @@ func GetParameters(wallets domain.Wallets) domain.Parameters {
 	flag.Int64Var(&batchSize, "bs", -1, fmt.Sprintf("Batch size for execution (range: -1 to %d). If -1, will execute until the end of the wallet.", maxInt64))
 	flag.IntVar(&batchCount, "bc", 1, fmt.Sprintf("Number of batches (range: 1 to %d). If -1, will execute until the end of the wallet.", math.MaxInt))
 	flag.BoolVar(&rng, "rng", false, "If present, generate random start location.")
+	flag.BoolVar(&verboseSummary, "vs", false, "Disable verbose output for summary.")
+	flag.BoolVar(&verboseProgress, "vp", false, "Disable verbose output for progress.")
+	flag.BoolVar(&verboseKeyFind, "vk", false, "Disable verbose output for key find.")
 
 	// Parseando as flags
 	flag.Parse()
@@ -46,16 +52,19 @@ func GetParameters(wallets domain.Wallets) domain.Parameters {
 	// Verificando se o batchCount é válido (não negativo, exceto para -1)
 	if batchCount < -1 {
 		flag.Usage()
-		log.Fatalf("\nError: Batch count must greater than 1.")
+		log.Fatalf("\nError: Batch count must be greater than 1.")
 	}
 
 	// Retornando os parâmetros
 	return domain.Parameters{
-		WorkerCount:    workerCount,
-		TargetWallet:   targetWallet,
-		UpdateInterval: updateInterval,
-		BatchSize:      batchSize,
-		BatchCount:     batchCount,
-		Rng:            rng,
+		WorkerCount:     workerCount,
+		TargetWallet:    targetWallet,
+		UpdateInterval:  updateInterval,
+		BatchSize:       batchSize,
+		BatchCount:      batchCount,
+		Rng:             rng,
+		VerboseSummary:  !verboseSummary,
+		VerboseProgress: !verboseProgress,
+		VerboseKeyFind:  !verboseKeyFind,
 	}
 }

@@ -23,7 +23,7 @@ func run(params domain.Parameters, ranges *domain.Ranges, wallets *domain.Wallet
 	workerGroup.Add(1)
 	outputGroup.Add(1)
 	go core.WorkersStartUp(params, wallets, inputChannel, outputChannel, &workerGroup)
-	go core.OutputHandler(outputChannel, wallets, &outputGroup)
+	go core.OutputHandler(outputChannel, wallets, params, &outputGroup)
 
 	for i := 0; i < params.BatchCount || params.BatchCount == -1; i++ {
 		batchCounter := i + 1
@@ -43,10 +43,12 @@ func run(params domain.Parameters, ranges *domain.Ranges, wallets *domain.Wallet
 			break
 		}
 
-		if batchCounter <= 1 {
-			core.PrintSummary(startClone, utils.Clone(end), utils.Clone(start), params, batchCounter)
-		} else {
-			core.PrintTinySummary(startClone, utils.Clone(end), utils.Clone(start), params, batchCounter)
+		if params.VerboseSummary {
+			if batchCounter <= 1 {
+				core.PrintSummary(startClone, utils.Clone(end), utils.Clone(start), params, batchCounter)
+			} else {
+				core.PrintTinySummary(startClone, utils.Clone(end), utils.Clone(start), params, batchCounter)
+			}
 		}
 
 		core.Scheduler(start, end, params, inputChannel)
