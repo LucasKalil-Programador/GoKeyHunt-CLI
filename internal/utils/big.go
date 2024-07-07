@@ -20,10 +20,8 @@ func GenerateRandomNumber(minimum, maximum *big.Int) (*big.Int, error) {
 		return nil, err
 	}
 
-	// Add the minimum value to the random number.
-	randNum.Add(randNum, minimum)
-
-	return randNum, nil
+	// Add the minimum value to the random number and return.
+	return new(big.Int).Add(randNum, minimum), nil
 }
 
 func MaxBigInt(a, b *big.Int) *big.Int {
