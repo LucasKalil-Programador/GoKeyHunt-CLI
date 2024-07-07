@@ -13,7 +13,7 @@ pull:
 	git pull
 
 # Comando para compilar o binário
-build: pull clean
+build:
 	go build -o $(BINARY_NAME) $(SRC_DIR)
 
 # Comando para rodar o binário

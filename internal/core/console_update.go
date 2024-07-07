@@ -10,6 +10,7 @@ import (
 
 func updater(minInt, maxInt, currentInt *big.Int, ticker *time.Ticker) {
 	startTime := time.Now()
+	time.Sleep(250 * time.Millisecond)
 	for range ticker.C {
 		printProgressString(minInt, maxInt, currentInt, startTime)
 	}

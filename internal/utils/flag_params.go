@@ -25,7 +25,7 @@ func GetParameters(wallets domain.Wallets) domain.Parameters {
 	flag.IntVar(&targetWallet, "w", 30, fmt.Sprintf("Target wallet (range: 0 to %d). Use 0 to search all wallets.", len(wallets.Addresses)))
 	flag.IntVar(&updateInterval, "u", 1, "Progress update interval in seconds.")
 	flag.Int64Var(&batchSize, "bs", -1, fmt.Sprintf("Batch size for execution (range: -1 to %d). If -1, will execute until the end of the wallet.", maxInt64))
-	flag.IntVar(&batchCount, "bc", 1, fmt.Sprintf("Number of batches (range: 1 to %d).", math.MaxInt))
+	flag.IntVar(&batchCount, "bc", 1, fmt.Sprintf("Number of batches (range: 1 to %d). If -1, will execute until the end of the wallet.", math.MaxInt))
 	flag.BoolVar(&rng, "rng", false, "If present, generate random start location.")
 
 	// Parseando as flags
@@ -44,7 +44,7 @@ func GetParameters(wallets domain.Wallets) domain.Parameters {
 	}
 
 	// Verificando se o batchCount é válido (não negativo, exceto para -1)
-	if batchCount < 1 {
+	if batchCount < -1 {
 		flag.Usage()
 		log.Fatalf("\nError: Batch count must greater than 1.")
 	}

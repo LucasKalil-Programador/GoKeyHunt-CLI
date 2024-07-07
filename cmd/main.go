@@ -12,31 +12,45 @@ import (
 func main() {
 	ranges, wallets := utils.LoadData()
 	params := utils.GetParameters(*wallets)
-
-	for i := 0; i < params.BatchCount; i++ {
-		run(params, ranges, wallets, i+1)
-	}
+	run(params, ranges, wallets)
 }
 
-func run(params domain.Parameters, ranges *domain.Ranges, wallets *domain.Wallets, batchCounter int) {
+func run(params domain.Parameters, ranges *domain.Ranges, wallets *domain.Wallets) {
 	inputChannel := make(chan *big.Int, params.WorkerCount*2)
 	outputChannel := make(chan *big.Int, params.WorkerCount)
 	var workerGroup, outputGroup sync.WaitGroup
-
-	start, end := getStartAndEnd(ranges, params)
-	startClone := utils.Clone(start)
-
-	if params.Rng {
-		start, _ = utils.GenerateRandomNumber(start, end)
-	}
-
-	core.PrintSummary(startClone, utils.Clone(end), utils.Clone(start), params, batchCounter)
 
 	workerGroup.Add(1)
 	outputGroup.Add(1)
 	go core.WorkersStartUp(params, wallets, inputChannel, outputChannel, &workerGroup)
 	go core.OutputHandler(outputChannel, wallets, &outputGroup)
-	core.Scheduler(start, end, params, inputChannel)
+
+	for i := 0; i < params.BatchCount || params.BatchCount == -1; i++ {
+		batchCounter := i + 1
+		start, end := getStartAndEnd(ranges, params)
+		startClone := utils.Clone(start)
+
+		if params.Rng {
+			start, _ = utils.GenerateRandomNumber(start, end)
+		} else if params.BatchSize != -1 {
+			startAdd := new(big.Int).Mul(
+				big.NewInt(params.BatchSize),
+				new(big.Int).Sub(big.NewInt(int64(batchCounter)), big.NewInt(1)))
+			start = new(big.Int).Add(start, startAdd)
+		}
+
+		if start.Cmp(end) > 0 {
+			break
+		}
+
+		if batchCounter <= 1 {
+			core.PrintSummary(startClone, utils.Clone(end), utils.Clone(start), params, batchCounter)
+		} else {
+			core.PrintTinySummary(startClone, utils.Clone(end), utils.Clone(start), params, batchCounter)
+		}
+
+		core.Scheduler(start, end, params, inputChannel)
+	}
 
 	close(inputChannel)
 	workerGroup.Wait()
