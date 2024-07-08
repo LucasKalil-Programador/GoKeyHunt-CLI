@@ -13,15 +13,9 @@ func GetParameters(wallets domain.Wallets) domain.Parameters {
 	var maxInt64 int64 = math.MaxInt64
 
 	// Criando as variáveis para armazenar os valores das flags
-	var workerCount int
-	var targetWallet int
-	var updateInterval int
+	var workerCount, targetWallet, updateInterval, batchCount int
+	var rng, verboseSummary, verboseProgress, verboseKeyFind bool
 	var batchSize int64
-	var batchCount int
-	var rng bool
-	var verboseSummary bool
-	var verboseProgress bool
-	var verboseKeyFind bool
 
 	// Definindo as flags
 	flag.IntVar(&workerCount, "t", 2, fmt.Sprintf("Worker thread count (available CPUs: %d).", runtime.NumCPU()))

@@ -1,4 +1,4 @@
-package core
+package console
 
 import (
 	"btcgo/internal/domain"
@@ -43,14 +43,14 @@ func PrintTinySummary(start, end, rng *big.Int, params domain.Parameters, batchC
 }
 
 func getStrings(rng, end, start *big.Int, params domain.Parameters, batchCounter int) (string, string, string, string, string, string, string, string) {
-	batchSize := utils.MinBigInt(new(big.Int).Sub(GetEndValue(rng, end, params), rng), big.NewInt(params.BatchSize))
+	batchSize := utils.MinBigInt(new(big.Int).Sub(getEndValue(rng, end, params), rng), big.NewInt(params.BatchSize))
 	if params.BatchSize == -1 {
 		batchSize = new(big.Int).Sub(end, start)
 	}
 	batchSize = batchSize.Add(batchSize, big.NewInt(1))
 	batchCount := big.NewInt(int64(params.BatchCount))
 	if params.BatchCount == -1 && !params.Rng {
-		bs := utils.MinBigInt(new(big.Int).Sub(GetEndValue(rng, end, params), start), big.NewInt(params.BatchSize))
+		bs := utils.MinBigInt(new(big.Int).Sub(getEndValue(rng, end, params), start), big.NewInt(params.BatchSize))
 		x := new(big.Int).Sub(end, start)
 		batchCount = new(big.Int).Add(new(big.Int).Div(x, bs), big.NewInt(1))
 	}
@@ -67,4 +67,11 @@ func getStrings(rng, end, start *big.Int, params domain.Parameters, batchCounter
 		maxBatchCounterStr = "infinity"
 	}
 	return rngStr, startStr, endStr, workerCountStr, batchSizeStr, updateIntervalStr, batchCounterStr, maxBatchCounterStr
+}
+
+func getEndValue(start, end *big.Int, params domain.Parameters) *big.Int {
+	if params.BatchSize != -1 {
+		end = utils.MinBigInt(new(big.Int).Add(start, big.NewInt(params.BatchSize-1)), end)
+	}
+	return end
 }

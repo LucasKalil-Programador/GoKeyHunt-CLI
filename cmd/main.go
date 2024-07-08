@@ -1,6 +1,7 @@
 package main
 
 import (
+	"btcgo/internal/console"
 	"btcgo/internal/core"
 	"btcgo/internal/domain"
 	"btcgo/internal/utils"
@@ -45,9 +46,9 @@ func run(params domain.Parameters, ranges *domain.Ranges, wallets *domain.Wallet
 
 		if params.VerboseSummary {
 			if batchCounter <= 1 {
-				core.PrintSummary(startClone, utils.Clone(end), utils.Clone(start), params, batchCounter)
+				console.PrintSummary(startClone, utils.Clone(end), utils.Clone(start), params, batchCounter)
 			} else {
-				core.PrintTinySummary(startClone, utils.Clone(end), utils.Clone(start), params, batchCounter)
+				console.PrintTinySummary(startClone, utils.Clone(end), utils.Clone(start), params, batchCounter)
 			}
 		}
 

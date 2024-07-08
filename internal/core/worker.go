@@ -20,8 +20,9 @@ func Worker(wallets *domain.Wallets, privKeyChan <-chan *big.Int, resultChan cha
 
 func WorkersStartUp(params domain.Parameters, wallets *domain.Wallets, inputChannel chan *big.Int, outputChannel chan *big.Int, wg *sync.WaitGroup) {
 	defer wg.Done()
+	wg.Add(params.WorkerCount)
+
 	for i := 0; i < params.WorkerCount; i++ {
-		wg.Add(1)
 		go Worker(wallets, inputChannel, outputChannel, wg)
 	}
 }

@@ -1,6 +1,7 @@
 package core
 
 import (
+	"btcgo/internal/console"
 	"btcgo/internal/domain"
 	"btcgo/internal/utils"
 	"math/big"
@@ -24,7 +25,7 @@ func Scheduler(start, end *big.Int, params domain.Parameters, inputChannel chan<
 		case inputChannel <- utils.Clone(privKey):
 			privKey.Add(privKey, increment)
 		case <-ticker.C:
-			PrintProgressString(start, end, privKey, startTime)
+			console.PrintProgressString(start, end, privKey, startTime)
 		}
 	}
 }
