@@ -31,3 +31,5 @@ btcgo.exe
 
 # Ignore files code
 output.txt
+data/wallet-*.json
+

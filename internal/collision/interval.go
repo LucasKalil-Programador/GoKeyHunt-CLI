@@ -10,6 +10,9 @@ type Interval struct {
 }
 
 func (interval *Interval) Set(a, b *big.Int) *Interval {
+	if a.Cmp(b) > 0 {
+		a, b = b, a
+	}
 	interval.a, interval.b = new(big.Int).Set(a), new(big.Int).Set(b)
 	return interval
 }
@@ -19,6 +22,9 @@ func (interval *Interval) SetInt(a, b int) *Interval {
 }
 
 func (interval *Interval) SetInt64(a, b int64) *Interval {
+	if a > b {
+		a, b = b, a
+	}
 	interval.a = big.NewInt(a)
 	interval.b = big.NewInt(b)
 	return interval
@@ -26,11 +32,13 @@ func (interval *Interval) SetInt64(a, b int64) *Interval {
 
 func (interval *Interval) SetString(a, b string, base int) (*Interval, bool) {
 	newA, successA := new(big.Int).SetString(a, base)
-	newB, successB := new(big.Int).SetString(a, base)
+	newB, successB := new(big.Int).SetString(b, base)
+	if newA.Cmp(newB) > 0 {
+		newA, newB = newB, newA
+	}
 	interval.a, interval.b = newA, newB
 	return interval, successA && successB
 }
-
 func (i Interval) Equals(other Interval) bool {
 	return i.a.Cmp(other.a) == 0 && i.b.Cmp(other.b) == 0
 }

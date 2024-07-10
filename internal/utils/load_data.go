@@ -30,6 +30,7 @@ func LoadData() (*domain.Ranges, *domain.Wallets) {
 	if err != nil {
 		log.Fatalf("Failed to load wallets: %v", err)
 	}
+
 	return ranges, wallets
 }
 

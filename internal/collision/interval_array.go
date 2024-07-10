@@ -6,13 +6,13 @@ import (
 )
 
 type IntervalArray struct {
-	intervalsArr []Interval
+	data []Interval
 }
 
 // Método String() para IntervalArray
 func (ia *IntervalArray) String() string {
-	intervalStrings := make([]string, len(ia.intervalsArr))
-	for i, interval := range ia.intervalsArr {
+	intervalStrings := make([]string, len(ia.data))
+	for i, interval := range ia.data {
 		intervalStrings[i] = interval.String()
 	}
 
@@ -23,21 +23,21 @@ func NewIntervalArray(intervals []Interval) *IntervalArray {
 	newIntervalsArr := make([]Interval, len(intervals))
 	copy(newIntervalsArr, intervals)
 	SortByStart(intervals)
-	return &IntervalArray{intervalsArr: newIntervalsArr}
+	return &IntervalArray{data: newIntervalsArr}
 }
 
 func NewEmptyIntervalArray() *IntervalArray {
 	var newIntervalsArr []Interval
-	return &IntervalArray{intervalsArr: newIntervalsArr}
+	return &IntervalArray{data: newIntervalsArr}
 }
 
 func (interArray *IntervalArray) Append(interval *Interval) {
-	interArray.intervalsArr = InsertSorted(interArray.intervalsArr, *interval)
+	interArray.data = InsertSorted(interArray.data, *interval)
 }
 
 func (interArray *IntervalArray) ResolveCollisions(target Interval) (*Interval, bool) {
 	newInterval := target.Clone()
-	for _, interval := range interArray.intervalsArr {
+	for _, interval := range interArray.data {
 		if interval.IsPointOverlap(newInterval.a) {
 			newInterval.a = new(big.Int).Add(interval.b, big.NewInt(1))
 		} else {
@@ -50,13 +50,13 @@ func (interArray *IntervalArray) ResolveCollisions(target Interval) (*Interval, 
 }
 
 func (interArray *IntervalArray) HandleIntervalCollision(interval Interval) (bool, Interval) {
-	hasCollision := HasOverlap(&interval, interArray.intervalsArr)
+	hasCollision := HasOverlap(&interval, interArray.data)
 	if hasCollision {
 		// fmt.Println("Colisao")
-		intervals := GetIntervalsBetween(&interval, interArray.intervalsArr)
+		intervals := GetIntervalsBetween(&interval, interArray.data)
 		newInterval, valid := NewIntervalArray(intervals).ResolveCollisions(interval)
 		if valid {
-			newHasCollision := HasOverlap(newInterval, interArray.intervalsArr)
+			newHasCollision := HasOverlap(newInterval, interArray.data)
 			if !newHasCollision {
 				// fmt.Printf("intervals: %v\n", intervals)
 				// fmt.Printf("interval: %v, newInterval: %v\n", interval, newInterval)
@@ -76,8 +76,8 @@ func (interArray *IntervalArray) HandleIntervalCollision(interval Interval) (boo
 }
 
 func (interArray *IntervalArray) Optimize() int {
-	length := len(interArray.intervalsArr)
-	intervals := interArray.intervalsArr
+	length := len(interArray.data)
+	intervals := interArray.data
 	rmCount := 0
 
 	i := 0
@@ -93,6 +93,6 @@ func (interArray *IntervalArray) Optimize() int {
 		}
 	}
 
-	interArray.intervalsArr = intervals
+	interArray.data = intervals
 	return rmCount
 }
