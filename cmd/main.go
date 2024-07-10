@@ -1,11 +1,11 @@
 package main
 
 import (
+	"btcgo/internal/collision"
 	"btcgo/internal/console"
 	"btcgo/internal/core"
 	"btcgo/internal/domain"
 	"btcgo/internal/utils"
-	"log"
 	"math/big"
 	"sync"
 )
@@ -13,10 +13,12 @@ import (
 func main() {
 	ranges, wallets := utils.LoadData()
 	params := utils.GetParameters(*wallets)
-	run(params, ranges, wallets)
+	intervalArray := collision.NewEmptyIntervalArray()
+	run(params, ranges, wallets, intervalArray)
+	intervalArray.Optimize()
 }
 
-func run(params domain.Parameters, ranges *domain.Ranges, wallets *domain.Wallets) {
+func run(params domain.Parameters, ranges *domain.Ranges, wallets *domain.Wallets, intervals *collision.IntervalArray) {
 	inputChannel := make(chan *big.Int, params.WorkerCount*2)
 	outputChannel := make(chan *big.Int, params.WorkerCount)
 	var workerGroup, outputGroup sync.WaitGroup
@@ -28,7 +30,7 @@ func run(params domain.Parameters, ranges *domain.Ranges, wallets *domain.Wallet
 
 	for i := 0; i < params.BatchCount || params.BatchCount == -1; i++ {
 		batchCounter := i + 1
-		start, end := getStartAndEnd(ranges, params)
+		start, end := utils.GetStartAndEnd(ranges, params)
 		startClone := utils.Clone(start)
 
 		if params.Rng {
@@ -52,23 +54,19 @@ func run(params domain.Parameters, ranges *domain.Ranges, wallets *domain.Wallet
 			}
 		}
 
-		core.Scheduler(start, end, params, inputChannel)
+		end = utils.GetEndValue(start, end, params)
+		interval := new(collision.Interval).Set(start, end)
+		hasCollision, newInterval := intervals.HandleIntervalCollision(*interval)
+
+		if !hasCollision {
+			start, end = newInterval.Get()
+			core.Scheduler(start, end, params, inputChannel)
+			intervals.Append(new(collision.Interval).Set(start, end))
+		}
 	}
 
 	close(inputChannel)
 	workerGroup.Wait()
 	close(outputChannel)
 	outputGroup.Wait()
-}
-
-func getStartAndEnd(ranges *domain.Ranges, params domain.Parameters) (*big.Int, *big.Int) {
-	start, ok := new(big.Int).SetString(ranges.Ranges[params.TargetWallet].Min[2:], 16)
-	if !ok {
-		log.Fatal("Erro ao converter o valor de início")
-	}
-	end, ok := new(big.Int).SetString(ranges.Ranges[params.TargetWallet].Max[2:], 16)
-	if !ok {
-		log.Fatal("Erro ao converter o valor de fim")
-	}
-	return start, end
 }
