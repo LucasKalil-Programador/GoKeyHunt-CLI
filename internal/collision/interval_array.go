@@ -95,7 +95,7 @@ func (interArray *IntervalArray) Optimize() int {
 	for i < length-1 {
 		interval1, interval2 := intervals[i], intervals[i+1]
 		if new(big.Int).Sub(interval2.a, interval1.b).Cmp(big.NewInt(1)) <= 0 {
-			intervals[i] = *new(Interval).Set(interval1.a, interval2.b)
+			intervals[i] = *new(Interval).Set(interval1.a, maxBigInt(interval1.b, interval2.b))
 			intervals = append(intervals[:i+1], intervals[i+2:]...)
 			rmCount++
 			length--
@@ -106,4 +106,11 @@ func (interArray *IntervalArray) Optimize() int {
 
 	interArray.data = intervals
 	return rmCount
+}
+
+func maxBigInt(a, b *big.Int) *big.Int {
+	if a.Cmp(b) > 0 {
+		return a
+	}
+	return b
 }

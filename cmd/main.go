@@ -18,19 +18,16 @@ func main() {
 	ctx := createAppContext()
 	startTime := time.Now()
 
-	run(&ctx)
+	runApplication(ctx)
 
 	sizeBeforeOp := ctx.Intervals.Size()
 	ctx.Intervals.Save(ctx.CollisionPathFile)
 	sizeAfterOp := ctx.Intervals.Size()
 
-	intervalProgress := ctx.Intervals.CalculateTotalProgress()
-	start, end := utils.GetStartAndEnd(*ctx.WalletRanges, *ctx.Params)
-	totalProgress := new(big.Int).Sub(end, start)
-	console.PrintEndSummary(startTime, sizeBeforeOp, sizeAfterOp, intervalProgress, totalProgress)
+	console.PrintEndSummaryIfVerbose(ctx, startTime, sizeBeforeOp, sizeAfterOp)
 }
 
-func run(ctx *app_context.AppCtx) {
+func runApplication(ctx *app_context.AppCtx) {
 	// unpack parameters from ctx
 	params, ranges, wallets, resultsJsonPath := *ctx.Params, *ctx.WalletRanges, *ctx.Wallets, ctx.ResultPathFile
 	intervals, results := ctx.Intervals, ctx.Results
@@ -70,7 +67,7 @@ func run(ctx *app_context.AppCtx) {
 	outputGroup.Wait()
 }
 
-func createAppContext() app_context.AppCtx {
+func createAppContext() *app_context.AppCtx {
 	ranges, wallets := utils.LoadData()
 	params := utils.GetParameters(*wallets)
 
@@ -80,7 +77,7 @@ func createAppContext() app_context.AppCtx {
 	intervals := collision.ReadOrNew(collisionPathFile)
 	results := output_results.ReadOrNew(resultPathFile)
 
-	return app_context.AppCtx{
+	return &app_context.AppCtx{
 		Params:            params,
 		WalletRanges:      ranges,
 		Wallets:           wallets,

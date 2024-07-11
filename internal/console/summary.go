@@ -1,6 +1,7 @@
 package console
 
 import (
+	"btcgo/internal/app_context"
 	"btcgo/internal/domain"
 	"btcgo/internal/utils"
 	"fmt"
@@ -24,6 +25,25 @@ func PrintSummaryIfVerbose(startOriginal, start, end *big.Int, params domain.Par
 			PrintTinySummary(startOriginal, utils.Clone(end), utils.Clone(start), params, batchCounter)
 		}
 	}
+}
+
+func PrintEndSummaryIfVerbose(ctx *app_context.AppCtx, startTime time.Time, sizeBeforeOp, sizeAfterOp int) {
+	if ctx.Params.VerboseSummary {
+		printEnd(ctx, startTime, sizeBeforeOp, sizeAfterOp)
+	}
+}
+
+func printEnd(ctx *app_context.AppCtx, startTime time.Time, sizeBeforeOp, sizeAfterOp int) {
+	intervalProgress := ctx.Intervals.CalculateTotalProgress()
+	start, end := utils.GetStartAndEnd(*ctx.WalletRanges, *ctx.Params)
+	totalProgress := new(big.Int).Sub(end, start)
+	foundTarget := false
+	for _, result := range ctx.Results.Resuts {
+		if result.WalletIndex == ctx.Params.TargetWallet {
+
+		}
+	}
+	PrintEndSummary(startTime, sizeBeforeOp, sizeAfterOp, intervalProgress, totalProgress, foundTarget)
 }
 
 // print
@@ -61,7 +81,7 @@ func PrintTinySummary(start, end, rng *big.Int, params domain.Parameters, batchC
 	fmt.Printf("%s\n\n\n", tinySummaryLabel)
 }
 
-func PrintEndSummary(startTime time.Time, jsonSize, optimizedSize int, intervalProgress, totalProgress *big.Int) {
+func PrintEndSummary(startTime time.Time, jsonSize, optimizedSize int, intervalProgress, totalProgress *big.Int, foundTarget bool) {
 	progressPercent := new(big.Float).Quo(new(big.Float).SetInt(intervalProgress), new(big.Float).SetInt(totalProgress))
 	progressPercent.Mul(progressPercent, big.NewFloat(100))
 
@@ -74,6 +94,7 @@ func PrintEndSummary(startTime time.Time, jsonSize, optimizedSize int, intervalP
 	fmt.Printf("- After optimization: %d\n", optimizedSize)
 	fmt.Printf("- progress: %v%%\n", progressPercent)
 	fmt.Printf("- Overall progress: %s/%s\n", intervalProgressStr, totalProgressStr)
+	fmt.Printf("- Wallet was found: %v\n", foundTarget)
 	fmt.Printf("%s\n\n\n", endSummaryLabel)
 }
 
