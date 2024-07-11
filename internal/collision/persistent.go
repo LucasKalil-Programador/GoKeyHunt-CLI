@@ -18,7 +18,7 @@ type intervalsTemp struct {
 	Data []intervalTemp `json:"Intervals"`
 }
 
-func (intArr IntervalArray) Save(filePath string) bool {
+func (intArr *IntervalArray) Save(filePath string) bool {
 	intervals := intArr.toTempIntervals()
 
 	jsonData, err := json.Marshal(intervals)
@@ -76,7 +76,7 @@ func toIntervalArray(intervalsTmp intervalsTemp) IntervalArray {
 	return IntervalArray{data: intervals}
 }
 
-func (intArr IntervalArray) toTempIntervals() intervalsTemp {
+func (intArr *IntervalArray) toTempIntervals() intervalsTemp {
 	intArr.Optimize()
 	intervalsTmpArr := make([]intervalTemp, len(intArr.data))
 	for i, interval := range intArr.data {

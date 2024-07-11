@@ -19,6 +19,18 @@ func (ia *IntervalArray) String() string {
 	return fmt.Sprintf("[%s]", intervalStrings)
 }
 
+func (ia *IntervalArray) Size() int {
+	return len(ia.data)
+}
+
+func (ia *IntervalArray) CalculateTotalProgress() *big.Int {
+	total, one := new(big.Int), big.NewInt(1)
+	for _, interval := range ia.data {
+		total.Add(total, interval.b).Sub(total, interval.a).Add(total, one)
+	}
+	return total
+}
+
 func NewIntervalArray(intervals []Interval) *IntervalArray {
 	newIntervalsArr := make([]Interval, len(intervals))
 	copy(newIntervalsArr, intervals)

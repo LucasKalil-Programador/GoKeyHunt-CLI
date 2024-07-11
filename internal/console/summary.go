@@ -5,15 +5,34 @@ import (
 	"btcgo/internal/utils"
 	"fmt"
 	"math/big"
+	"time"
 
 	"github.com/dustin/go-humanize"
 )
+
+const summaryLabel = "------------------ Summary -------------------"
+const tinySummaryLabel = "---------------- Tiny Summary ----------------"
+const endSummaryLabel = "---------------- End Summary -----------------"
+
+// sugar print
+
+func PrintSummaryIfVerbose(startOriginal, start, end *big.Int, params domain.Parameters, batchCounter int) {
+	if params.VerboseSummary {
+		if batchCounter <= 1 {
+			PrintSummary(startOriginal, utils.Clone(end), utils.Clone(start), params, batchCounter)
+		} else {
+			PrintTinySummary(startOriginal, utils.Clone(end), utils.Clone(start), params, batchCounter)
+		}
+	}
+}
+
+// print
 
 func PrintSummary(start, end, rng *big.Int, params domain.Parameters, batchCounter int) {
 	rngStr, startStr, endStr, workerCountStr, batchSizeStr,
 		updateIntervalStr, batchCounterStr, maxBatchCounterStr := getStrings(rng, end, start, params, batchCounter)
 
-	fmt.Printf("\n\n---------------- Summary ----------------\n")
+	fmt.Printf("\n\n%s\n", summaryLabel)
 	fmt.Printf("- Target wallet: %d\n", params.TargetWallet)
 	if params.Rng {
 		fmt.Printf("-  RNG: %s\n", rngStr)
@@ -27,20 +46,38 @@ func PrintSummary(start, end, rng *big.Int, params domain.Parameters, batchCount
 	fmt.Printf("- Interval between updates: %s\n", updateIntervalStr)
 	fmt.Printf("-\n")
 	fmt.Printf("- Batch %s/%s\n", batchCounterStr, maxBatchCounterStr)
-	fmt.Printf("---------------- Summary ----------------\n\n\n")
+	fmt.Printf("%s\n\n\n", summaryLabel)
 }
 
 func PrintTinySummary(start, end, rng *big.Int, params domain.Parameters, batchCounter int) {
 	rngStr, _, _, _, batchSizeStr, _, batchCounterStr, maxBatchCounterStr := getStrings(rng, end, start, params, batchCounter)
 
-	fmt.Printf("\n\n---------------- Tiny Summary ----------------\n")
+	fmt.Printf("\n\n%s\n", tinySummaryLabel)
 	if params.Rng {
 		fmt.Printf("-  RNG: %s\n", rngStr)
 	}
 	fmt.Printf("- Batch size: %v\n", batchSizeStr)
 	fmt.Printf("- Batch %s/%s\n", batchCounterStr, maxBatchCounterStr)
-	fmt.Printf("---------------- Tiny Summary ----------------\n\n\n")
+	fmt.Printf("%s\n\n\n", tinySummaryLabel)
 }
+
+func PrintEndSummary(startTime time.Time, jsonSize, optimizedSize int, intervalProgress, totalProgress *big.Int) {
+	progressPercent := new(big.Float).Quo(new(big.Float).SetInt(intervalProgress), new(big.Float).SetInt(totalProgress))
+	progressPercent.Mul(progressPercent, big.NewFloat(100))
+
+	intervalProgressStr := humanize.BigComma(intervalProgress)
+	totalProgressStr := humanize.BigComma(totalProgress.Add(totalProgress, big.NewInt(1)))
+
+	fmt.Printf("\n\n%s\n", endSummaryLabel)
+	fmt.Printf("- Elapsed time: %v\n", time.Since(startTime).Truncate(time.Millisecond))
+	fmt.Printf("- Wallet JSON size: %d\n", jsonSize)
+	fmt.Printf("- After optimization: %d\n", optimizedSize)
+	fmt.Printf("- progress: %v%%\n", progressPercent)
+	fmt.Printf("- Overall progress: %s/%s\n", intervalProgressStr, totalProgressStr)
+	fmt.Printf("%s\n\n\n", endSummaryLabel)
+}
+
+// Aux functions
 
 func getStrings(rng, end, start *big.Int, params domain.Parameters, batchCounter int) (string, string, string, string, string, string, string, string) {
 	batchSize := utils.MinBigInt(new(big.Int).Sub(getEndValue(rng, end, params), rng), big.NewInt(params.BatchSize))

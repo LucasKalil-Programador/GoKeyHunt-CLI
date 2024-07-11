@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"btcgo/internal/collision"
 	"btcgo/internal/domain"
 	"log"
 	"math/big"
@@ -23,4 +24,31 @@ func GetEndValue(start, end *big.Int, params domain.Parameters) *big.Int {
 		end = MinBigInt(new(big.Int).Add(start, big.NewInt(params.BatchSize-1)), end)
 	}
 	return end
+}
+
+func GetStart(start, end *big.Int, params domain.Parameters, batchCounter int) *big.Int {
+	if params.Rng {
+		start, _ = GenerateRandomNumber(start, end)
+	} else if params.BatchSize != -1 {
+		startAdd := new(big.Int).Mul(
+			big.NewInt(params.BatchSize),
+			new(big.Int).Sub(big.NewInt(int64(batchCounter)), big.NewInt(1)))
+		start = new(big.Int).Add(start, startAdd)
+	}
+	return start
+}
+
+func HandleCollisions(startOriginal, start, end *big.Int, params domain.Parameters, intervals *collision.IntervalArray) (bool, collision.Interval) {
+	end = GetEndValue(start, end, params)
+	interval := new(collision.Interval).Set(start, end)
+	hasCollision, newInterval := intervals.HandleIntervalCollision(*interval)
+
+	if hasCollision {
+		dif := new(big.Int).Sub(end, start)
+		newStart := MaxBigInt(startOriginal, new(big.Int).Sub(start, dif))
+		newEnd := new(big.Int).Sub(end, dif)
+		interval := new(collision.Interval).Set(newStart, newEnd)
+		hasCollision, newInterval = intervals.HandleIntervalCollision(*interval)
+	}
+	return hasCollision, newInterval
 }
