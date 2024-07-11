@@ -7,7 +7,7 @@ import (
 	"os"
 )
 
-const DefaultBase = 62
+const DefaultBase = 10
 
 type intervalTemp struct {
 	A string `json:"A"`

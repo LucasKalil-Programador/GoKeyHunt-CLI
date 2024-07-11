@@ -1,10 +1,12 @@
 package main
 
 import (
+	"btcgo/internal/app_context"
 	"btcgo/internal/collision"
 	"btcgo/internal/console"
 	"btcgo/internal/core"
 	"btcgo/internal/domain"
+	"btcgo/internal/output_results"
 	"btcgo/internal/utils"
 	"fmt"
 	"math/big"
@@ -16,15 +18,30 @@ func main() {
 	ranges, wallets := utils.LoadData()
 	params := utils.GetParameters(*wallets)
 
-	filePath := filepath.Join(utils.GetRootDir(), "data", fmt.Sprintf("wallet-%d.json", params.TargetWallet))
-	intervalArray := collision.ReadOrNew(filePath)
+	collisionPathFile := filepath.Join(utils.GetRootDir(), "data", fmt.Sprintf("wallet-%d.json", params.TargetWallet))
+	resultPathFile := filepath.Join(utils.GetRootDir(), "results.json")
+	intervals := collision.ReadOrNew(collisionPathFile)
+	results := output_results.ReadOrNew(resultPathFile)
 
-	run(params, ranges, wallets, intervalArray)
+	ctx := app_context.AppCtx{
+		Params:            params,
+		WalletRanges:      ranges,
+		Wallets:           wallets,
+		Intervals:         intervals,
+		Results:           results,
+		CollisionPathFile: collisionPathFile,
+		ResultPathFile:    resultPathFile}
 
-	intervalArray.Save(filePath)
+	run(&ctx)
+
+	ctx.Intervals.Save(collisionPathFile)
 }
 
-func run(params domain.Parameters, ranges *domain.Ranges, wallets *domain.Wallets, intervals *collision.IntervalArray) {
+func run(ctx *app_context.AppCtx) {
+	// unpack parameters from ctx
+	params, ranges, wallets, resultsJsonPath := *ctx.Params, *ctx.WalletRanges, *ctx.Wallets, ctx.ResultPathFile
+	intervals, results := ctx.Intervals, ctx.Results
+
 	inputChannel := make(chan *big.Int, params.WorkerCount*2)
 	outputChannel := make(chan *big.Int, params.WorkerCount)
 	var workerGroup, outputGroup sync.WaitGroup
@@ -32,7 +49,7 @@ func run(params domain.Parameters, ranges *domain.Ranges, wallets *domain.Wallet
 	workerGroup.Add(1)
 	outputGroup.Add(1)
 	go core.WorkersStartUp(params, wallets, inputChannel, outputChannel, &workerGroup)
-	go core.OutputHandler(outputChannel, wallets, params, &outputGroup)
+	go output_results.OutputHandler(params, wallets, results, resultsJsonPath, outputChannel, &outputGroup)
 
 	for i := 0; i < params.BatchCount || params.BatchCount == -1; i++ {
 		start, end := utils.GetStartAndEnd(ranges, params)
@@ -47,7 +64,6 @@ func run(params domain.Parameters, ranges *domain.Ranges, wallets *domain.Wallet
 		printSummaryIfVerbose(startOriginal, start, end, params, i+1)
 
 		hasCollision, newInterval := handleCollisions(startOriginal, start, end, params, intervals)
-
 		if !hasCollision {
 			start, end = newInterval.Get()
 			core.Scheduler(start, end, params, inputChannel)

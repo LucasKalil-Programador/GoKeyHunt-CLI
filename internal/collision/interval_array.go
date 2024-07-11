@@ -27,8 +27,7 @@ func NewIntervalArray(intervals []Interval) *IntervalArray {
 }
 
 func NewEmptyIntervalArray() *IntervalArray {
-	var newIntervalsArr []Interval
-	return &IntervalArray{data: newIntervalsArr}
+	return &IntervalArray{}
 }
 
 func (interArray *IntervalArray) Append(interval *Interval) {

@@ -6,7 +6,7 @@ import (
 	"math/big"
 )
 
-func GetStartAndEnd(ranges *domain.Ranges, params domain.Parameters) (*big.Int, *big.Int) {
+func GetStartAndEnd(ranges domain.Ranges, params domain.Parameters) (*big.Int, *big.Int) {
 	start, ok := new(big.Int).SetString(ranges.Ranges[params.TargetWallet].Min[2:], 16)
 	if !ok {
 		log.Fatal("Erro ao converter o valor de início")

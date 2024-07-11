@@ -27,4 +27,5 @@ func Scheduler(start, end *big.Int, params domain.Parameters, inputChannel chan<
 			console.PrintProgressString(start, end, privKey, startTime)
 		}
 	}
+	console.PrintProgressString(start, end, privKey, startTime)
 }

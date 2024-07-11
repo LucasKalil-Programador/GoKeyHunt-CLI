@@ -8,7 +8,7 @@ import (
 )
 
 // Worker is a function that searches for a private key that matches a wallet address
-func Worker(wallets *domain.Wallets, privKeyChan <-chan *big.Int, resultChan chan<- *big.Int, wg *sync.WaitGroup) {
+func Worker(wallets domain.Wallets, privKeyChan <-chan *big.Int, resultChan chan<- *big.Int, wg *sync.WaitGroup) {
 	defer wg.Done()
 	for privKeyInt := range privKeyChan {
 		address := utils.CreatePublicHash160(privKeyInt)
@@ -18,7 +18,7 @@ func Worker(wallets *domain.Wallets, privKeyChan <-chan *big.Int, resultChan cha
 	}
 }
 
-func WorkersStartUp(params domain.Parameters, wallets *domain.Wallets, inputChannel chan *big.Int, outputChannel chan *big.Int, wg *sync.WaitGroup) {
+func WorkersStartUp(params domain.Parameters, wallets domain.Wallets, inputChannel chan *big.Int, outputChannel chan *big.Int, wg *sync.WaitGroup) {
 	defer wg.Done()
 	wg.Add(params.WorkerCount)
 

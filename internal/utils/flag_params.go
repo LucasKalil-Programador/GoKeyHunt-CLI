@@ -20,7 +20,7 @@ import (
 //
 // Returns:
 // - domain.Parameters: A Parameters structure containing the parsed and validated flag values.
-func GetParameters(wallets domain.Wallets) domain.Parameters {
+func GetParameters(wallets domain.Wallets) *domain.Parameters {
 	var maxInt64 int64 = math.MaxInt64
 
 	// Variables to store flag values
@@ -61,7 +61,7 @@ func GetParameters(wallets domain.Wallets) domain.Parameters {
 	}
 
 	// Return parameters
-	return domain.Parameters{
+	return &domain.Parameters{
 		WorkerCount:     workerCount,
 		TargetWallet:    targetWallet,
 		UpdateInterval:  updateInterval,
