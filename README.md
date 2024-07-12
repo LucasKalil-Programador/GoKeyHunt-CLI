@@ -91,4 +91,4 @@ Este projeto está licenciado sob a Licença MIT - veja o arquivo [LICENSE](./LI
 
 Lucas - [lucas.prokalil2020@outlook.com](mailto:lucas.prokalil2020@outlook.com)
 
-Link para seu projeto: [https://github.com/LucasKalil-Programador/GoKeyHunt-CLI](https://github.com/LucasKalil-Programador/GoKeyHunt-CLI)
+Repositório no GitHub: [GoKeyHunt-CLI](https://github.com/LucasKalil-Programador/GoKeyHunt-CLI)
