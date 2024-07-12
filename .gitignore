@@ -26,8 +26,8 @@ bin/
 backup/
 
 # Ignore the executable
-btcgo
-btcgo.exe
+GoKeyHunt
+GoKeyHunt.exe
 
 # Ignore files code
 results.json

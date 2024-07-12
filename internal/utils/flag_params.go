@@ -1,12 +1,17 @@
 package utils
 
 import (
-	"btcgo/internal/domain"
+	"GoKeyHunt/internal/domain"
+	"encoding/json"
 	"flag"
 	"fmt"
+	"io"
 	"log"
 	"math"
+	"os"
+	"path/filepath"
 	"runtime"
+	"strings"
 )
 
 // GetParameters parses command-line flags and returns the parameters for the application.
@@ -21,11 +26,14 @@ import (
 // Returns:
 // - domain.Parameters: A Parameters structure containing the parsed and validated flag values.
 func GetParameters(wallets domain.Wallets) *domain.Parameters {
+	presetsJson := filepath.Join(GetRootDir(), "data", "presets.json")
+	presetsMap := GetPresets(presetsJson)
 	var maxInt64 int64 = math.MaxInt64
 
 	// Variables to store flag values
 	var workerCount, targetWallet, updateInterval, batchCount int
 	var rng, verboseSummary, verboseProgress, verboseKeyFind bool
+	var usePreset string
 	var batchSize int64
 
 	// Define flags
@@ -38,9 +46,20 @@ func GetParameters(wallets domain.Wallets) *domain.Parameters {
 	flag.BoolVar(&verboseSummary, "vs", false, "Disable verbose output for summary.")
 	flag.BoolVar(&verboseProgress, "vp", false, "Disable verbose output for progress.")
 	flag.BoolVar(&verboseKeyFind, "vk", false, "Disable verbose output for key find.")
+	flag.StringVar(&usePreset, "preset", "", "If specified, all other flags are overwritten by the preset. Available presets: "+presetsMap.String())
 
 	// Parse flags
 	flag.Parse()
+
+	empty := ""
+	if usePreset != empty && presetsMap != nil {
+		if value, exists := presetsMap.Presets[usePreset]; exists {
+			flag.CommandLine.Parse(strings.Split(value, " "))
+		} else {
+			fmt.Println("Preset not found. Please check if /data/presets.json exists.")
+			os.Exit(0)
+		}
+	}
 
 	// Validate targetWallet
 	if targetWallet < 0 || targetWallet > len(wallets.Addresses) {
@@ -72,4 +91,48 @@ func GetParameters(wallets domain.Wallets) *domain.Parameters {
 		VerboseProgress: !verboseProgress,
 		VerboseKeyFind:  !verboseKeyFind,
 	}
+}
+
+type Presets struct {
+	Presets map[string]string `json:"presets"`
+}
+
+func (p *Presets) String() string {
+	if p == nil || len(p.Presets) == 0 {
+		return "No presets available."
+	}
+
+	result := "\n"
+	for key, value := range p.Presets {
+		result += fmt.Sprintf("%s: %s\n", key, value)
+	}
+	return result
+}
+
+func GetPresets(filePath string) *Presets {
+	presets, err := Read(filePath)
+	if err != nil {
+		log.Printf("Error on read presets: %v", err)
+	}
+	return presets
+}
+
+func Read(filePath string) (*Presets, error) {
+	file, err := os.Open(filePath)
+	if err != nil {
+		return nil, err
+	}
+	defer file.Close()
+
+	bytes, err := io.ReadAll(file)
+	if err != nil {
+		return nil, err
+	}
+
+	var presetsMap Presets
+	if err := json.Unmarshal(bytes, &presetsMap); err != nil {
+		return nil, err
+	}
+
+	return &presetsMap, nil
 }

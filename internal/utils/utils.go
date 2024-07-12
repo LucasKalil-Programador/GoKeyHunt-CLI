@@ -1,8 +1,8 @@
 package utils
 
 import (
-	"btcgo/internal/collision"
-	"btcgo/internal/domain"
+	"GoKeyHunt/internal/collision"
+	"GoKeyHunt/internal/domain"
 	"log"
 	"math/big"
 )

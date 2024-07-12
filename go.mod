@@ -1,4 +1,4 @@
-module btcgo
+module GoKeyHunt
 
 go 1.22.3
 

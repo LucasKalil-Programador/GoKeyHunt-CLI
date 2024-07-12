@@ -1,8 +1,8 @@
 package output_results
 
 import (
-	"btcgo/internal/domain"
-	"btcgo/internal/utils"
+	"GoKeyHunt/internal/domain"
+	"GoKeyHunt/internal/utils"
 	"encoding/json"
 	"fmt"
 	"io"

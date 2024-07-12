@@ -1,7 +1,7 @@
 package output_results
 
 import (
-	"btcgo/internal/domain"
+	"GoKeyHunt/internal/domain"
 	"fmt"
 	"math/big"
 	"sync"
@@ -12,14 +12,18 @@ func OutputHandler(params domain.Parameters, wallets domain.Wallets, resultArray
 	for key := range outputChannel {
 		result := NewResult(key, wallets)
 		added := resultArray.AppendIfNotExist(*result)
-		handlerResult(added, result)
+
+		if params.VerboseKeyFind {
+			printResult(added, result)
+		}
+
 		if added {
 			resultArray.Save(jsonPath)
 		}
 	}
 }
 
-func handlerResult(exist bool, result *Result) {
+func printResult(exist bool, result *Result) {
 	var addedResultStr string
 	if exist {
 		addedResultStr = "Added to results.json"

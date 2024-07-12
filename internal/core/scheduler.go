@@ -1,9 +1,9 @@
 package core
 
 import (
-	"btcgo/internal/console"
-	"btcgo/internal/domain"
-	"btcgo/internal/utils"
+	"GoKeyHunt/internal/console"
+	"GoKeyHunt/internal/domain"
+	"GoKeyHunt/internal/utils"
 	"math/big"
 	"time"
 )

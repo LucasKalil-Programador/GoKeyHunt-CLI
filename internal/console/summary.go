@@ -1,9 +1,9 @@
 package console
 
 import (
-	"btcgo/internal/app_context"
-	"btcgo/internal/domain"
-	"btcgo/internal/utils"
+	"GoKeyHunt/internal/app_context"
+	"GoKeyHunt/internal/domain"
+	"GoKeyHunt/internal/utils"
 	"fmt"
 	"math/big"
 	"time"

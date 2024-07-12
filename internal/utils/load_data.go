@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"btcgo/internal/domain"
+	"GoKeyHunt/internal/domain"
 	"encoding/json"
 	"io"
 	"log"

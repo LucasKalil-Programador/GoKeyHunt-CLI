@@ -1,8 +1,9 @@
 package core
 
 import (
-	"btcgo/internal/domain"
-	"btcgo/internal/utils"
+	"GoKeyHunt/internal/domain"
+	"GoKeyHunt/internal/utils"
+
 	"math/big"
 	"sync"
 )

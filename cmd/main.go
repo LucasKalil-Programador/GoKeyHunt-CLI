@@ -1,12 +1,12 @@
 package main
 
 import (
-	"btcgo/internal/app_context"
-	"btcgo/internal/collision"
-	"btcgo/internal/console"
-	"btcgo/internal/core"
-	"btcgo/internal/output_results"
-	"btcgo/internal/utils"
+	"GoKeyHunt/internal/app_context"
+	"GoKeyHunt/internal/collision"
+	"GoKeyHunt/internal/console"
+	"GoKeyHunt/internal/core"
+	"GoKeyHunt/internal/output_results"
+	"GoKeyHunt/internal/utils"
 	"fmt"
 	"math/big"
 	"path/filepath"
@@ -14,7 +14,10 @@ import (
 	"time"
 )
 
+const version = "GoKeyHunt 1.0.0	|	Created by Lucas Kalil"
+
 func main() {
+	fmt.Println(version)
 	ctx := createAppContext()
 	startTime := time.Now()
 

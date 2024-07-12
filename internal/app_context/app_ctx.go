@@ -1,9 +1,9 @@
 package app_context
 
 import (
-	"btcgo/internal/collision"
-	"btcgo/internal/domain"
-	"btcgo/internal/output_results"
+	"GoKeyHunt/internal/collision"
+	"GoKeyHunt/internal/domain"
+	"GoKeyHunt/internal/output_results"
 )
 
 type AppCtx struct {
