@@ -55,15 +55,10 @@ func GenerateWif(privKeyInt *big.Int) string {
 // Returns:
 // - []byte: The Hash160 of the public key.
 func CreatePublicHash160(privKeyInt *big.Int) []byte {
-	privKeyBytes := privKeyInt.Bytes()
-
-	privKey := secp256k1.PrivKeyFromBytes(privKeyBytes)
-
+	privKey := secp256k1.PrivKeyFromBytes(privKeyInt.Bytes())
 	compressedPubKey := privKey.PubKey().SerializeCompressed()
 
-	pubKeyHash := hash160(compressedPubKey)
-
-	return pubKeyHash
+	return hash160(compressedPubKey)
 }
 
 // hash160 computes the Hash160 of a given byte slice.
@@ -77,11 +72,9 @@ func CreatePublicHash160(privKeyInt *big.Int) []byte {
 // Returns:
 // - []byte: The Hash160 of the input byte slice.
 func hash160(b []byte) []byte {
-	h := sha256.New()
-	h.Write(b)
-	sha256Hash := h.Sum(nil)
+	sha256Hash := sha256.Sum256(b)
 
 	r := ripemd160.New()
-	r.Write(sha256Hash)
+	r.Write(sha256Hash[:])
 	return r.Sum(nil)
 }

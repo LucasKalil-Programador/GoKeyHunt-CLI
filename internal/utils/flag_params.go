@@ -93,10 +93,12 @@ func GetParameters(wallets domain.Wallets) *domain.Parameters {
 	}
 }
 
+// Presets represents a collection of preset key-value pairs.
 type Presets struct {
 	Presets map[string]string `json:"presets"`
 }
 
+// String returns a string representation of the Presets object.
 func (p *Presets) String() string {
 	if p == nil || len(p.Presets) == 0 {
 		return "No presets available."
@@ -109,14 +111,19 @@ func (p *Presets) String() string {
 	return result
 }
 
+// GetPresets loads presets from the specified file path.
+// Returns a Presets object or logs an error if the operation fails.
 func GetPresets(filePath string) *Presets {
 	presets, err := Read(filePath)
 	if err != nil {
-		log.Printf("Error on read presets: %v", err)
+		log.Printf("Error reading presets: %v", err)
+		return nil
 	}
 	return presets
 }
 
+// Read reads presets from a file at the given path and unmarshals them into a Presets object.
+// Returns the Presets object and any error encountered during the read or unmarshal operations.
 func Read(filePath string) (*Presets, error) {
 	file, err := os.Open(filePath)
 	if err != nil {
@@ -129,10 +136,10 @@ func Read(filePath string) (*Presets, error) {
 		return nil, err
 	}
 
-	var presetsMap Presets
-	if err := json.Unmarshal(bytes, &presetsMap); err != nil {
+	var presets Presets
+	if err := json.Unmarshal(bytes, &presets); err != nil {
 		return nil, err
 	}
 
-	return &presetsMap, nil
+	return &presets, nil
 }
