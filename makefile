@@ -1,5 +1,5 @@
 # Nome do binário
-BINARY_NAME=btcgo.exe
+BINARY_NAME=GoKeyHunt.exe
 
 # Diretório de fontes
 SRC_DIR=./cmd
