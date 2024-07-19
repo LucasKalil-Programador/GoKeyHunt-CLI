@@ -1,168 +1,57 @@
 {
-    "Intervals": [
-        {
-            "A": "HXmza2ckz6w",
-            "B": "HXmzad75xV5"
-        },
-        {
-            "A": "Kj32xXFMsz0",
-            "B": "Kj32xYLsmff"
-        },
-        {
-            "A": "LrixYogw1yU",
-            "B": "LrixYpmbVf9"
-        },
-        {
-            "A": "LHdoC8vlyhO",
-            "B": "LHdoC9B1rY3"
-        },
-        {
-            "A": "LKewyzLn4uJ",
-            "B": "LKewyAR2YaY"
-        },
-        {
-            "A": "M0EIwnvfnig",
-            "B": "M0EIwoAVgYv"
-        },
-        {
-            "A": "M5NmOoArFlK",
-            "B": "M5NmOpG7z1Z"
-        },
-        {
-            "A": "OoJsl52uX5s",
-            "B": "OoJsl68aQLH"
-        },
-        {
-            "A": "PtSY26gRWPU",
-            "B": "PtSY27mxQw9"
-        },
-        {
-            "A": "PxSRFtgCMFG",
-            "B": "PxSRFumiGlV"
-        },
-        {
-            "A": "Q9WyUxWxTkT",
-            "B": "Q9WyUz2dN18"
-        },
-        {
-            "A": "QaRVUzbrEu4",
-            "B": "QaRVUAh7yaj"
-        },
-        {
-            "A": "Qm0EaRaMmHk",
-            "B": "Qm0EaSgsgnz"
-        },
-        {
-            "A": "R5Z6gNzarsL",
-            "B": "R5Z6gOEQl90"
-        },
-        {
-            "A": "R6NIORaPvmz",
-            "B": "R6NIOSgvp2O"
-        },
-        {
-            "A": "T6c2MaJ5NW3",
-            "B": "T6c2MbOLHCi"
-        },
-        {
-            "A": "UbrrUCwWJMe",
-            "B": "UbrrUDCCDst"
-        },
-        {
-            "A": "VuqxTxSGkci",
-            "B": "VuqxTyYmdSx"
-        },
-        {
-            "A": "WiJJHIztO9h",
-            "B": "WiJJHJF9HPw"
-        },
-        {
-            "A": "Zuymezf5GHL",
-            "B": "ZuymeAkLAo0"
-        },
-        {
-            "A": "10ebuShfOUIO",
-            "B": "10ebuSiluOp3"
-        },
-        {
-            "A": "12fdGDbZ6tEU",
-            "B": "12fdGDd4Mnl9"
-        },
-        {
-            "A": "14LKlM1hyAUu",
-            "B": "14LKlM2neuAJ"
-        },
-        {
-            "A": "15FRl08sGrtY",
-            "B": "15FRl09ymlad"
-        },
-        {
-            "A": "16DGXfc2PlcN",
-            "B": "16DGXfd8veT2"
-        },
-        {
-            "A": "1cNdf5BNfg0w",
-            "B": "1cNdf5CSV9GL"
-        },
-        {
-            "A": "1drpc7YZX0Sd",
-            "B": "1drpc805CUys"
-        },
-        {
-            "A": "1dvJHChy1F0N",
-            "B": "1dvJHCiDHyH2"
-        },
-        {
-            "A": "1ehhMihy6EJL",
-            "B": "1ehhMiiDMyq0"
-        },
-        {
-            "A": "1fqtJhpJA7uI",
-            "B": "1fqtJhqPg1aX"
-        },
-        {
-            "A": "1g8ZNi9IjZCw",
-            "B": "1g8ZNiaNZTiL"
-        },
-        {
-            "A": "1g9sM4LZtDBq",
-            "B": "1g9sM4N59xhF"
-        },
-        {
-            "A": "1hDBQJxNwKCw",
-            "B": "1hDBQJyTcEiL"
-        },
-        {
-            "A": "1j949FhJbWiA",
-            "B": "1j949FiORPYP"
-        },
-        {
-            "A": "1jSZViUhUIM1",
-            "B": "1jSZViVnACsg"
-        },
-        {
-            "A": "1l6aVPim6QqZ",
-            "B": "1l6aVPjrMK7e"
-        },
-        {
-            "A": "1lLfKTB2a6y3",
-            "B": "1lLfKTC7Q0ei"
-        },
-        {
-            "A": "1mmkMghhEUrf",
-            "B": "1mmkMginkO7u"
-        },
-        {
-            "A": "1n0nbsTiYsOr",
-            "B": "1n0nbsUoEmuG"
-        },
-        {
-            "A": "1oDVROrPjAGu",
-            "B": "1oDVROsUZumJ"
-        },
-        {
-            "A": "1piBQHaWScrQ",
-            "B": "1piBQHc2y685"
-        }
-    ]
+  "Intervals": [
+    { "A": "HXmza2ckz6w", "B": "HXmzad75xV5" },
+    { "A": "IdI9RYaxbtG", "B": "IdI9RZgd59V" },
+    { "A": "Jka39aRaQq4", "B": "Jka39bWQK6j" },
+    { "A": "Kj32xXFMsz0", "B": "Kj32xYLsmff" },
+    { "A": "KM5X0J6pY78", "B": "KM5X0Kc5RNn" },
+    { "A": "LrixYogw1yU", "B": "LrixYpmbVf9" },
+    { "A": "LHdoC8vlyhO", "B": "LHdoC9B1rY3" },
+    { "A": "LKewyzLn4uJ", "B": "LKewyAR2YaY" },
+    { "A": "M0EIwnvfnig", "B": "M0EIwoAVgYv" },
+    { "A": "M5NmOoArFlK", "B": "M5NmOpG7z1Z" },
+    { "A": "OoJsl52uX5s", "B": "OoJsl68aQLH" },
+    { "A": "PtSY26gRWPU", "B": "PtSY27mxQw9" },
+    { "A": "PxSRFtgCMFG", "B": "PxSRFumiGlV" },
+    { "A": "Q9WyUxWxTkT", "B": "Q9WyUz2dN18" },
+    { "A": "QaRVUzbrEu4", "B": "QaRVUAh7yaj" },
+    { "A": "Qm0EaRaMmHk", "B": "Qm0EaSgsgnz" },
+    { "A": "R5Z6gNzarsL", "B": "R5Z6gOEQl90" },
+    { "A": "R6NIORaPvmz", "B": "R6NIOSgvp2O" },
+    { "A": "T6c2MaJ5NW3", "B": "T6c2MbOLHCi" },
+    { "A": "UbrrUCwWJMe", "B": "UbrrUDCCDst" },
+    { "A": "VuqxTxSGkci", "B": "VuqxTyYmdSx" },
+    { "A": "WiJJHIztO9h", "B": "WiJJHJF9HPw" },
+    { "A": "WYSrv17bDzk", "B": "WYSrv2cRxfz" },
+    { "A": "Zuymezf5GHL", "B": "ZuymeAkLAo0" },
+    { "A": "10ebuShfOUIO", "B": "10ebuSiluOp3" },
+    { "A": "12fdGDbZ6tEU", "B": "12fdGDd4Mnl9" },
+    { "A": "12yuu65pWnxB", "B": "12yuu66vChdQ" },
+    { "A": "12TG9Ly5aIaI", "B": "12TG9LzaQBQX" },
+    { "A": "12VnQf0lxdf8", "B": "12VnQf1rd6Vn" },
+    { "A": "14LKlM1hyAUu", "B": "14LKlM2neuAJ" },
+    { "A": "14U4i7jdgKaI", "B": "14U4i7kiWDQX" },
+    { "A": "15FRl08sGrtY", "B": "15FRl09ymlad" },
+    { "A": "16DGXfc2PlcN", "B": "16DGXfd8veT2" },
+    { "A": "171VIeIfcCpn", "B": "171VIeJkSw5C" },
+    { "A": "1cNdf5BNfg0w", "B": "1cNdf5CSV9GL" },
+    { "A": "1drpc7YZX0Sd", "B": "1drpc805CUys" },
+    { "A": "1dvJHChy1F0N", "B": "1dvJHCiDHyH2" },
+    { "A": "1ehhMihy6EJL", "B": "1ehhMiiDMyq0" },
+    { "A": "1fqtJhpJA7uI", "B": "1fqtJhqPg1aX" },
+    { "A": "1g8ZNi9IjZCw", "B": "1g8ZNiaNZTiL" },
+    { "A": "1g9sM4LZtDBq", "B": "1g9sM4N59xhF" },
+    { "A": "1gzajufwkTbG", "B": "1gzajugC0MRV" },
+    { "A": "1hDBQJxNwKCw", "B": "1hDBQJyTcEiL" },
+    { "A": "1j0LFzmioYjS", "B": "1j0LFzno4S07" },
+    { "A": "1j949FhJbWiA", "B": "1j949FiORPYP" },
+    { "A": "1jSZViUhUIM1", "B": "1jSZViVnACsg" },
+    { "A": "1l6aVPim6QqZ", "B": "1l6aVPjrMK7e" },
+    { "A": "1lLfKTB2a6y3", "B": "1lLfKTC7Q0ei" },
+    { "A": "1mmkMghhEUrf", "B": "1mmkMginkO7u" },
+    { "A": "1n0nbsTiYsOr", "B": "1n0nbsUoEmuG" },
+    { "A": "1ndwOLbDaSnh", "B": "1ndwOLcIQM3w" },
+    { "A": "1oDVROrPjAGu", "B": "1oDVROsUZumJ" },
+    { "A": "1piBQHaWScrQ", "B": "1piBQHc2y685" }
+  ]
 }
