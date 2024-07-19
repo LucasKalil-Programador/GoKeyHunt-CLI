@@ -148,7 +148,7 @@ func PrintEndSummary(startTime time.Time, jsonSize, optimizedSize int, intervalP
 	fmt.Printf("- Elapsed time: %v\n", time.Since(startTime).Truncate(time.Millisecond))
 	fmt.Printf("- Wallet JSON size: %d\n", jsonSize)
 	fmt.Printf("- After optimization: %d\n", optimizedSize)
-	fmt.Printf("- progress: %v%%\n", progressPercent)
+	fmt.Printf("- progress: %v%%\n", progressPercent.Text('f', -1))
 	fmt.Printf("- Overall progress: %s/%s\n", intervalProgressStr, totalProgressStr)
 	fmt.Printf("- Wallet was found: %v\n", foundTarget)
 	fmt.Printf("%s\n\n\n", endSummaryLabel)
