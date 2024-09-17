@@ -1,6 +1,7 @@
 {
-    "presets": {
-        "wallet-66": "-w 66 -bs 1_000_000_000 -t 16 -rng",
-        "benchmark": "-w 0 -t 16"
-    }
+  "presets": {
+    "wallet-66": "-w 66 -bs 1_000_000_000 -t 16 -rng",
+    "wallet-66-2": "-w 66 -bs 10_000_000_000 -t 16 -rng -u 5",
+    "benchmark": "-w 0 -t 16"
+  }
 }

@@ -31,4 +31,3 @@ GoKeyHunt.exe
 
 # Ignore files code
 results.json
-data/wallet-*.json
